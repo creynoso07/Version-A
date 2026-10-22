@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cineplex Ticket Checkout Prototype</title>
+  <!-- Link to external stylesheet in css/ folder (Fonts loaded via CSS @import) -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+  <!-- Official Cineplex Top Header & Navigation -->
+  <header class="cp-header">
+    <!-- Centered Cineplex Header -->
+    <div class="cp-main-nav">
+      <div class="cp-nav-inner cp-header-centered">
+        <!-- Cineplex Logo & Title in the Middle -->
+        <a href="#" class="cp-logo-block" aria-label="Cineplex Home">
+          <div class="cp-rings-icon">
+            <svg viewBox="0 0 100 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <ellipse cx="50" cy="24" rx="46" ry="19" stroke="#ffd500" stroke-width="4.5" fill="none" />
+              <ellipse cx="50" cy="24" rx="33" ry="13.5" stroke="#ffd500" stroke-width="3.5" fill="none"
+                opacity="0.9" />
+              <ellipse cx="50" cy="24" rx="20" ry="8" stroke="#ffd500" stroke-width="2.5" fill="none" opacity="0.8" />
+            </svg>
+          </div>
+          <div class="cp-wordmark-wrap">
+            <span class="cp-wordmark">CINEPLEX</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- 7-Step Progress Stepper -->
+  <nav class="stepper-container" aria-label="Checkout Progress">
+    <ol class="stepper">
+      <li class="step-item active" data-step="1">
+        <div class="step-number">1</div>
+        <div class="step-title">Movie</div>
+      </li>
+      <li class="step-item" data-step="2">
+        <div class="step-number">2</div>
+        <div class="step-title">Theatre</div>
+      </li>
+      <li class="step-item" data-step="3">
+        <div class="step-number">3</div>
+        <div class="step-title">Showtime</div>
+      </li>
+      <li class="step-item" data-step="4">
+        <div class="step-number">4</div>
+        <div class="step-title" id="stepper-seats-title">Tickets &amp; Seats</div>
+      </li>
+      <li class="step-item" data-step="5">
+        <div class="step-number">5</div>
+        <div class="step-title">Checkout</div>
+      </li>
+      <li class="step-item" data-step="6">
+        <div class="step-number">6</div>
+        <div class="step-title">Payment</div>
+      </li>
+      <li class="step-item" data-step="7">
+        <div class="step-number">7</div>
+        <div class="step-title">Confirmation</div>
+      </li>
+    </ol>
+  </nav>
+
+  <!-- Main Content Container -->
+  <main class="main-content">
+
+    <!-- Active Selection Summary Pills (Updates dynamically) -->
+    <section id="selection-summary-bar" class="selection-summary-bar" style="display: none;">
+      <div id="summary-content" style="display: flex; gap: 10px; flex-wrap: wrap;"></div>
+    </section>
+
+    <!-- STEP 1: Select Movie -->
+    <section id="screen-step-1" class="screen-panel active">
+      <div class="screen-header">
+        <h1 class="screen-title">Step 1: Select a Movie</h1>
+        <p class="screen-subtitle">Choose the feature film you would like to attend.</p>
+      </div>
+      <div id="movie-list-container" class="movie-grid">
+        <!-- Rendered dynamically via js/app.js -->
+      </div>
+    </section>
+
+    <!-- STEP 2: Select Theatre -->
+    <section id="screen-step-2" class="screen-panel">
+      <div class="screen-header">
+        <h1 class="screen-title">Step 2: Select Theatre Location</h1>
+        <p class="screen-subtitle">Select a cinema location near you.</p>
+      </div>
+      <div id="theatre-list-container" class="theatre-list">
+        <!-- Rendered dynamically via js/app.js -->
+      </div>
+    </section>
+
+    <!-- STEP 3: Select Showtime -->
+    <section id="screen-step-3" class="screen-panel">
+      <div class="screen-header">
+        <h1 class="screen-title">Step 3: Select Date & Showtime</h1>
+        <p class="screen-subtitle">Choose a screening date and preferred viewing format.</p>
+      </div>
+      <!-- Date Tabs -->
+      <div id="date-tabs-container" class="showtime-date-tabs">
+        <!-- Rendered dynamically via js/app.js -->
+      </div>
+      <!-- Time Slot Categories -->
+      <div id="showtimes-container">
+        <!-- Rendered dynamically via js/app.js -->
+      </div>
+    </section>
+
+    <!-- STEP 4: Select Tickets & Seats -->
+    <section id="screen-step-4" class="screen-panel">
+      <div class="screen-header">
+        <h1 class="screen-title">Step 4: Select Tickets &amp; Pick Seats</h1>
+        <p class="screen-subtitle">Choose your ticket types and quantities, then pick your matching seats on the map.
+        </p>
+      </div>
+
+      <!-- Ticket Type Selection Section -->
+      <div class="ticket-selection-wrapper">
+        <div class="ticket-selection-header">
+          <div>
+            <h2 class="substep-heading">1. Select Ticket Types</h2>
+            <p class="substep-desc">Choose how many tickets you need for each category.</p>
+          </div>
+          <div id="total-tickets-badge" class="total-tickets-badge">2 Tickets Selected</div>
+        </div>
+
+        <div id="ticket-types-container" class="ticket-types-grid">
+          <!-- Rendered dynamically via js/app.js -->
+        </div>
+      </div>
+
+      <div class="seatmap-container">
+        <div class="seatmap-header-bar">
+          <h2 class="substep-heading">2. Select Your Seats</h2>
+          <p class="substep-desc">Pick your seats corresponding to your ticket count.</p>
+        </div>
+
+        <!-- Curved Cinema Screen Indicator -->
+        <div class="screen-indicator-box">
+          &bull; FRONT AUDITORIUM SCREEN &bull;
+        </div>
+
+        <!-- Seating Map Grid -->
+        <div id="seat-grid-container" class="seat-grid">
+          <!-- Rendered dynamically via js/app.js -->
+        </div>
+
+        <!-- Seat Map Legend -->
+        <div class="seat-legend">
+          <div class="legend-item">
+            <span class="legend-swatch available"></span>
+            <span>Available</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-swatch selected"></span>
+            <span id="legend-selected-label">Selected</span>
+          </div>
+          <div class="legend-item">
+            <span class="legend-swatch occupied"></span>
+            <span>Occupied / Reserved</span>
+          </div>
+        </div>
+
+        <!-- Current Selection Notice -->
+        <div id="seat-count-status" class="seat-requirement-notice">
+          Please select <strong>2 seats</strong> on the map.
+        </div>
+
+        <!-- Seat Selection Preview Card (Matches Sketch Screen 1) -->
+        <div id="seat-checkout-summary-card" class="seat-checkout-summary-card" style="display: none;">
+          <div class="checkout-summary-left">
+            <div class="sketch-poster-placeholder">
+              <span class="cross-icon">&#10005;</span>
+            </div>
+            <div class="summary-meta">
+              <h3 id="seat-card-movie-title" class="summary-movie-title">Movie Title</h3>
+              <p id="seat-card-details" class="summary-movie-details">PG &bull; 2h 10m</p>
+              <p id="seat-card-datetime" class="summary-movie-time">Tue, Oct 10 &bull; 7:30 PM</p>
+              <p id="seat-card-seats" class="summary-movie-seats">Seats: A4, A5</p>
+            </div>
+          </div>
+          <button type="button" id="btn-proceed-to-checkout" class="btn btn-primary btn-proceed">
+            Proceed to Checkout &rarr;
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 5: Flexible Checkout (Guest or Sign In - Matches Sketch Screen 2) -->
+    <section id="screen-step-5" class="screen-panel">
+      <div class="screen-header">
+        <h1 class="screen-title">Step 5: Checkout Options</h1>
+        <p class="screen-subtitle">Choose how you'd like to check out. Sign in is optional &mdash; no lock required.</p>
+      </div>
+
+      <div class="checkout-wrapper">
+        <!-- Dual Selection: Guest Checkout vs Sign In (Matches Sketch Screen 2) -->
+        <div class="checkout-option-selector" role="radiogroup" aria-label="Checkout Mode">
+          <label class="checkout-mode-card active" id="card-mode-guest">
+            <input type="radio" name="checkout-mode" id="radio-mode-guest" value="guest" checked>
+            <span class="custom-radio"></span>
+            <div class="mode-text">
+              <div class="mode-title">
+                <strong>Guest Checkout</strong>
+                <span class="badge-tag">No Account Required</span>
+              </div>
+              <p class="mode-desc">Quick checkout. Simply provide your email address to receive your tickets.</p>
+            </div>
+          </label>
+
+          <label class="checkout-mode-card" id="card-mode-signin">
+            <input type="radio" name="checkout-mode" id="radio-mode-signin" value="signin">
+            <span class="custom-radio"></span>
+            <div class="mode-text">
+              <div class="mode-title">
+                <strong>Sign In</strong>
+                <span class="badge-tag">Member Option</span>
+              </div>
+              <p class="mode-desc">Sign in with an existing Cineplex account to access saved details.</p>
+            </div>
+          </label>
+        </div>
+
+        <!-- 1. GUEST CHECKOUT FORM (Visible by default) -->
+        <div id="panel-guest-mode" class="mode-content-panel">
+          <div class="checkout-note-banner">
+            <span class="info-icon">&#9432;</span>
+            <div>
+              <strong>No Sign In Lock:</strong> You can proceed directly without logging in. Enter your email below to
+              receive your ticket barcode.
+            </div>
+          </div>
+
+          <form id="guest-checkout-form">
+            <div class="form-group">
+              <label for="guest-email" class="form-label">Email Address</label>
+              <input type="email" id="guest-email" class="form-input" placeholder="you@email.com" value="you@email.com"
+                required>
+              <div class="form-helper">Your booking confirmation and digital tickets will be sent to this email.</div>
+            </div>
+
+            <div id="guest-error-msg" style="color: #b91c1c; font-size: 0.85rem; margin-bottom: 14px;"></div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+              Continue to Payment &rarr;
+            </button>
+          </form>
+
+          <div class="filler-credentials-hint">
+            <strong>Prototype Note:</strong> Pre-filled with filler email (<code>you@email.com</code>). Click "Continue
+            to Payment" or the bottom Next button.
+          </div>
+        </div>
+
+        <!-- 2. SIGN IN FORM (Visible when Sign In is toggled) -->
+        <div id="panel-signin-mode" class="mode-content-panel" style="display: none;">
+          <div class="checkout-note-banner">
+            <span class="info-icon">&#9432;</span>
+            <div>
+              <strong>Member Sign In:</strong> Sign in with your Cineplex account credentials below.
+            </div>
+          </div>
+
+          <form id="login-form">
+            <div class="form-group">
+              <label for="login-email" class="form-label">Email Address</label>
+              <input type="email" id="login-email" class="form-input" placeholder="e.g. student@cineplex.ca"
+                value="student@cineplex.ca" required>
+            </div>
+
+            <div class="form-group">
+              <label for="login-password" class="form-label">Password</label>
+              <input type="password" id="login-password" class="form-input" placeholder="Enter password"
+                value="password123" required>
+              <div class="form-helper">Password must be at least 6 characters.</div>
+            </div>
+
+            <div id="login-error-msg" style="color: #b91c1c; font-size: 0.85rem; margin-bottom: 14px;"></div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+              Sign In &amp; Continue &rarr;
+            </button>
+          </form>
+
+          <div class="filler-credentials-hint">
+            <strong>Prototype Note:</strong> Demo credentials pre-filled. You can also switch back to "Guest Checkout"
+            above at any time.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STEP 6: Payment (Express Pay, Credit Card, Debit Card, & Both) -->
+    <section id="screen-step-6" class="screen-panel">
+      <div class="screen-header">
+        <h1 class="screen-title">Step 6: Payment &amp; Review</h1>
+        <p class="screen-subtitle">Choose Express Pay, Credit Card, Debit Card, or split across both cards to complete
+          booking.</p>
+      </div>
+
+      <div class="checkout-columns">
+        <!-- Payment Details Form Column -->
+        <div class="payment-form-box">
+          <!-- Express Pay Section -->
+          <div class="express-pay-section">
+            <h2 class="section-subheading">Express Pay</h2>
+            <div class="express-btn-group">
+              <button type="button" id="btn-apple-pay" class="btn-express btn-apple">
+                <span class="express-icon">&#63743;</span> Apple Pay
+              </button>
+              <button type="button" id="btn-google-pay" class="btn-express btn-google">
+                <span class="express-icon">G</span> Google Pay
+              </button>
+              <button type="button" id="btn-credit-pay" class="btn-express btn-card-express">
+                <span class="express-icon">💳</span> Credit Card
+              </button>
+              <button type="button" id="btn-debit-pay" class="btn-express btn-card-express">
+                <span class="express-icon">🏦</span> Debit Card
+              </button>
+            </div>
+            <div class="express-hint">Click any option to complete mock payment instantly.</div>
+          </div>
+
+          <div class="or-divider-line">
+            <span>OR PAY WITH CARD</span>
+          </div>
+
+          <!-- Payment Method Choice: Credit Card, Debit Card, or Split (Both) -->
+          <div class="payment-method-selector-wrap">
+            <h2 class="section-subheading">Choose Payment Method</h2>
+            <div class="payment-method-options" role="radiogroup" aria-label="Payment Method Option">
+              <label class="payment-method-card active" id="card-method-credit">
+                <input type="radio" name="payment-method-type" id="radio-pay-credit" value="credit" checked>
+                <div class="pay-method-indicator"></div>
+                <div class="pay-method-content">
+                  <div class="pay-method-title">
+                    <span class="method-icon">💳</span>
+                    <strong>Credit Card</strong>
+                  </div>
+                  <span class="pay-method-badges">Visa &bull; MC &bull; Amex</span>
+                </div>
+              </label>
+
+              <label class="payment-method-card" id="card-method-debit">
+                <input type="radio" name="payment-method-type" id="radio-pay-debit" value="debit">
+                <div class="pay-method-indicator"></div>
+                <div class="pay-method-content">
+                  <div class="pay-method-title">
+                    <span class="method-icon">🏦</span>
+                    <strong>Debit Card</strong>
+                  </div>
+                  <span class="pay-method-badges">Interac &bull; Debit</span>
+                </div>
+              </label>
+
+              <label class="payment-method-card" id="card-method-split">
+                <input type="radio" name="payment-method-type" id="radio-pay-split" value="split">
+                <div class="pay-method-indicator"></div>
+                <div class="pay-method-content">
+                  <div class="pay-method-title">
+                    <span class="method-icon">🔀</span>
+                    <strong>Pay with Both</strong>
+                  </div>
+                  <span class="pay-method-badges">Split Credit + Debit</span>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- FORM 1: Credit Card Details Form -->
+          <div id="section-credit-form" class="card-form-section">
+            <h3 class="card-form-heading">💳 Credit Card Details</h3>
+            <div id="credit-form-container">
+              <div class="form-group">
+                <label for="credit-card-name" class="form-label">Cardholder Name</label>
+                <input type="text" id="credit-card-name" class="form-input" placeholder="Full Name as on card"
+                  value="Christopher Alex" required>
+              </div>
+
+              <div class="form-group">
+                <label for="credit-card-number" class="form-label">Credit Card Number</label>
+                <input type="text" id="credit-card-number" class="form-input" placeholder="4500 1234 5678 9012"
+                  value="4500 1234 5678 9012" required>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="credit-card-expiry" class="form-label">Expiry (MM/YY)</label>
+                  <input type="text" id="credit-card-expiry" class="form-input" placeholder="12/28" value="12/28"
+                    required>
+                </div>
+                <div class="form-group">
+                  <label for="credit-card-cvv" class="form-label">CVV</label>
+                  <input type="password" id="credit-card-cvv" class="form-input" placeholder="123" maxlength="4"
+                    value="123" required>
+                </div>
+              </div>
+
+              <button type="button" id="btn-save-credit-card" class="btn btn-secondary"
+                style="width: 100%; justify-content: center; margin-bottom: 6px;">
+                Save Credit Card Details
+              </button>
+            </div>
+          </div>
+
+          <!-- FORM 2: Debit Card Details Form -->
+          <div id="section-debit-form" class="card-form-section" style="display: none;">
+            <h3 class="card-form-heading">🏦 Debit Card Details (Interac / Visa Debit)</h3>
+            <div id="debit-form-container">
+              <div class="form-group">
+                <label for="debit-card-name" class="form-label">Debit Cardholder Name</label>
+                <input type="text" id="debit-card-name" class="form-input" placeholder="Full Name as on debit card"
+                  value="Christopher Alex" required>
+              </div>
+
+              <div class="form-group">
+                <label for="debit-card-number" class="form-label">Debit Card Number (16 Digits)</label>
+                <input type="text" id="debit-card-number" class="form-input" placeholder="4724 8812 3456 7890"
+                  value="4724 8812 3456 7890" required>
+              </div>
+
+              <div class="form-group">
+                <label for="debit-bank-name" class="form-label">Financial Institution / Issuing Bank</label>
+                <select id="debit-bank-name" class="form-input">
+                  <option value="TD Canada Trust" selected>TD Canada Trust (Interac Debit)</option>
+                  <option value="Scotiabank">Scotiabank (Interac Debit)</option>
+                  <option value="RBC Royal Bank">RBC Royal Bank</option>
+                  <option value="BMO Bank of Montreal">BMO Bank of Montreal</option>
+                  <option value="CIBC">CIBC</option>
+                  <option value="Other Canadian Institution">Other Financial Institution</option>
+                </select>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="debit-card-expiry" class="form-label">Expiry (MM/YY)</label>
+                  <input type="text" id="debit-card-expiry" class="form-input" placeholder="09/27" value="09/27"
+                    required>
+                </div>
+                <div class="form-group">
+                  <label for="debit-card-cvv" class="form-label">Security Code (CVV)</label>
+                  <input type="password" id="debit-card-cvv" class="form-input" placeholder="456" maxlength="4"
+                    value="456" required>
+                </div>
+              </div>
+
+              <button type="button" id="btn-save-debit-card" class="btn btn-secondary"
+                style="width: 100%; justify-content: center; margin-bottom: 6px;">
+                Save Debit Card Details
+              </button>
+            </div>
+          </div>
+
+          <!-- FORM 3: Split Payment Section (Option to use BOTH cards) -->
+          <div id="section-split-form" class="card-form-section" style="display: none;">
+            <div class="split-info-banner">
+              <strong>Split Payment Active:</strong> Pay using both your added <strong>Debit Card</strong> and
+              <strong>Credit Card</strong> for this booking.
+            </div>
+
+            <div class="split-calculator-box">
+              <div class="split-row">
+                <label for="split-debit-input" class="split-label">
+                  <span>Charge to <strong>Debit Card</strong> (Interac &bull;&bull;&bull;&bull; 7890):</span>
+                </label>
+                <div class="split-input-wrapper">
+                  <span class="currency-prefix">$</span>
+                  <input type="number" id="split-debit-input" class="form-input split-input" min="1.00" step="1.00"
+                    value="20.00">
+                </div>
+              </div>
+
+              <div class="split-row">
+                <span class="split-label">
+                  <span>Remainder to <strong>Credit Card</strong> (Visa &bull;&bull;&bull;&bull; 9012):</span>
+                </span>
+                <span class="split-calculated-val" id="split-credit-amount-display">$17.29 CAD</span>
+              </div>
+
+              <div class="split-quick-buttons">
+                <button type="button" class="btn-split-preset" data-split="half">Split 50% / 50%</button>
+                <button type="button" class="btn-split-preset" data-split="debit-20">Debit $20 / Rest Credit</button>
+                <button type="button" class="btn-split-preset" data-split="debit-10">Debit $10 / Rest Credit</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Master Action Submit Form -->
+          <form id="payment-form">
+            <button type="submit" id="btn-main-pay" class="btn btn-primary"
+              style="width: 100%; justify-content: center; margin-top: 14px; font-size: 1rem; padding: 14px;">
+              Pay with Credit Card &rarr;
+            </button>
+          </form>
+
+          <div class="filler-credentials-hint">
+            <strong>Prototype Note:</strong> Mock credentials for both Credit &amp; Debit cards are pre-filled. You can
+            switch between Credit Card, Debit Card, or use Both (Split Payment).
+          </div>
+        </div>
+
+        <!-- Order Summary Card -->
+        <aside class="order-summary-card">
+          <h3 class="summary-heading">Order Summary</h3>
+          <div id="order-summary-details">
+            <!-- Dynamically populated via js/app.js -->
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- STEP 7: Confirmation Screen (Matches Sketch Screen 3) -->
+    <section id="screen-step-7" class="screen-panel">
+      <div class="confirmation-box">
+        <div class="success-badge-icon">&check;</div>
+        <h1 class="screen-title">Booking Confirmed!</h1>
+        <p class="screen-subtitle">Your tickets have been sent to <strong
+            id="confirm-email-display">you@email.com</strong></p>
+
+        <!-- Digital Ticket Card -->
+        <div class="ticket-pass" id="confirmation-details">
+          <!-- Dynamically populated via js/app.js -->
+        </div>
+
+        <div>
+          <button id="btn-start-over" type="button" class="btn btn-secondary">
+            &larr; Book Another Movie (Restart Flow)
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Sticky Bottom Navigation Controls -->
+  <footer class="bottom-nav-bar">
+    <div class="nav-inner">
+      <button id="btn-back" type="button" class="btn btn-secondary">
+        &larr; Back
+      </button>
+      <div id="nav-validation-msg" class="nav-validation-msg"></div>
+      <button id="btn-next" type="button" class="btn btn-primary" disabled>
+        Continue to Theatres &rarr;
+      </button>
+    </div>
+  </footer>
+
+  <!-- Main JavaScript File -->
+  <script src="js/app.js"></script>
+</body>
+
+</html>
